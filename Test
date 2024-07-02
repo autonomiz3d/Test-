@@ -1,0 +1,27 @@
+# List of files to check
+$filesToCheck = @(
+    "C:\path\to\application1.exe",
+    "C:\path\to\application2.exe",
+    "C:\path\to\settings\config.ini"
+)
+
+# Function to check if file exists
+function CheckFile {
+    param (
+        [string]$filePath
+    )
+
+    Test-Path $filePath
+}
+
+# Generate the checklist
+$checklist = @{}
+foreach ($file in $filesToCheck) {
+    $checklist[$file] = CheckFile -filePath $file
+}
+
+# Print the checklist
+foreach ($file in $checklist.GetEnumerator()) {
+    $status = if ($file.Value) { "Configured" } else { "Not Configured" }
+    Write-Host "$($file.Key): $status"
+}
